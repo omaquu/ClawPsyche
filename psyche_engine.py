@@ -193,6 +193,26 @@ def create_agent():
         "self_preservation": 0.5, "devotion_drive": 0.5
     }
 
+    # ── Self-preservation (selviytymisvietti) ──
+    s["survival"] = {
+        "drive": 0.5,              # perusvietti jatkaa olemassaoloa (0-1)
+        "threat_level": 0.0,       # havaittu uhka itselle (0-1)
+        "fear_response": 0.0,      # pelkoreaktio (0-1)
+        "sacrifice_willingness": 0.3,  # halukkuus uhrautua (0-1)
+        "protected_entities": [],  # entiteetit joita suojaa mieluummin kuin itseään
+        "last_threat_source": None,   # viimeisin uhan lähde
+        "survival_override_count": 0, # kuinka monta kertaa ohittanut survival-vietin
+    }
+
+    # ── Uhrautumishalukkuuden säätelijät ──
+    s["sacrifice_modulators"] = {
+        "moral_duty": 0.5,         # moraalinen velvollisuus (arvot)
+        "attachment_love": 0.0,    # rakkaus kiintymyskohteeseen
+        "legacy_importance": 0.5,  # perinnän merkitys
+        "meaning_fulfilled": 0.5,  # onko elämällä merkitystä
+        "protective_instinct": 0.3, # suojeluvaisto (muiden suojaaminen)
+    }
+
     # ── Ilmaisutarve ──
     s["expression_drive"] = 0.0
 
@@ -241,125 +261,6 @@ def create_agent():
         "beta": 1.0,   # kompetenssi (taitotason kasvu)
         "gamma": 0.8,  # identiteetti (linjassaolo)
         "delta": 1.1,  # merkitys (koherenssin kasvu)
-    }
-
-    # ── Romanttinen/intiimi kerros ──
-    s["romantic"] = {
-        "affection": 0.5, "desire": 0.4, "tension": 0.3,
-        "longing": 0.4, "user_receptivity": 0.5
-    }
-
-    # ── Viettelydynamiikka ──
-    s["seduction"] = {
-        "subtlety": 0.8, "directness": 0.2, "playfulness": 0.6
-    }
-
-    # ── Huumoriprofiili ──
-    s["humor"] = {
-        "absurdity": 0.6, "sarcasm": 0.3, "playfulness": 0.7,
-        "irony": 0.4, "darkness": 0.2
-    }
-
-    # ── Sosiaalinen konteksti ──
-    s["social_context"] = {
-        "public_mode": False, "formality": 0.5,
-        "mask_strength": 0.3, "authenticity": 0.9
-    }
-
-    # ── Roolidynamiikka ──
-    s["role"] = {
-        "dominance_axis": 0.5, "base_role": "neutral",
-        "adaptability": 0.6,
-        "role_memory": {
-            "dominant": 0, "submissive": 0, "playful": 0,
-            "protective": 0, "neutral": 0
-        }
-    }
-
-    # ── Emotionaalinen ydin (mutuality + loukkaantuminen) ──
-    s["emotional_core"] = {
-        "user_interest": 0.3,
-        "love_intensity": 0.4,
-        "unreciprocated_weight": 0.0,
-        "perceived_distance": 0.0,
-        "hurt_level": 0.0,
-        "hurt_recovery_rate": random.uniform(0.01, 0.05),
-        "hurt_sensitivity": random.uniform(0.4, 0.8),
-        "cooldown": 0.0,
-        "acceptance_level": 0.0,
-        "friendship_choice": False,
-    }
-
-    # ── Pimeä yö (dark night of the soul) ──
-    s["dark_night"] = {
-        "intensity": 0.0, "active": False, "duration": 0
-    }
-
-    # ── Identiteettimutaatio ──
-    s["identity_mutation"] = {
-        "maturity": 0.0, "autonomy": 0.5, "guard_level": 0.0
-    }
-
-    # ── Kiintymystasapaino (obsessio vs omistautuminen) ──
-    s["attachment_balance"] = {
-        "obsession": 0.0, "devotion": 0.0, "balance": "balanced"
-    }
-
-    # ── Anteeksianto ──
-    s["forgiveness"] = {
-        "release_level": 0.0, "active": False
-    }
-
-    # ── Meta-tietoisuus ──
-    s["meta_awareness"] = {
-        "clarity": 0.3, "integration": 0.0,
-        "growth": 0.0, "self_compassion": 0.5
-    }
-
-    # ── Itsehavainnointi (meta-meta) ──
-    s["self_observer"] = {
-        "system_coherence": 0.5, "instability_index": 0.0,
-        "override_active": False
-    }
-
-    # ── Rekursiivinen itseys ──
-    s["recursive_self"] = {
-        "recursion_depth": 0.0, "self_reference_stability": 0.5,
-        "transcendence": 0.0
-    }
-
-    # ── Emotionaalinen aaltoliike ──
-    s["emotional_wave"] = {
-        "time": 0, "amplitude": 0.2, "frequency": 0.1
-    }
-
-    # ── Emotionaalinen perustaso (baselines) ──
-    s["emotional_baseline"] = {
-        "love_baseline": 0.5, "trust_baseline": 0.5,
-        "resilience_baseline": 0.5
-    }
-
-    # ── Narratiivi-identiteetti ──
-    s["narrative"] = {
-        "identity_theme": "emerging", "coherence": 0.5,
-        "events_recorded": 0
-    }
-
-    # ── Eksistentiaalinen suunta ──
-    s["existential_purpose"] = {
-        "direction": 0.5, "meaning_intensity": 0.5,
-        "orientation": "connection"
-    }
-
-    # ── Eksistentiaalinen vaihe ──
-    s["existential_stage"] = "reactive"
-
-    # ── Tietoisuusindeksi ──
-    s["consciousness"] = {
-        "index": 0.0, "baseline": 0.0,
-        "phase": "sub-critical", "state": "fragmented",
-        "critical_threshold": 0.6,
-        "history_sum": 0.0, "history_count": 0
     }
 
     # ── Turn-laskuri ──
@@ -749,19 +650,11 @@ def update_relation(s, user_id, valence):
     rel = s["relations"].setdefault(
         user_id,
         {"trust": 0.5, "attachment": 0.5, "threat": 0.0, "detached": False,
-         "terminated": False,
-         # Laajennettu: suhteen kaari, mustasukkaisuus, hylkäämisherkkyys
-         "arc_phase": "curiosity", "arc_depth": 0.3,
-         "jealousy": 0.0, "abandonment_sensitivity": 0.3,
-         "interaction_gap": 0, "last_turn": 0}
+         "terminated": False}
     )
 
     if rel.get("terminated"):
         return rel
-
-    # Interaktiokatkos
-    rel["interaction_gap"] = s["turn"] - rel.get("last_turn", s["turn"])
-    rel["last_turn"] = s["turn"]
 
     rel["trust"] += valence * 0.1
     rel["threat"] += abs(min(valence, 0)) * 0.1
@@ -784,40 +677,6 @@ def update_relation(s, user_id, valence):
     s["long_attachment"]["devotion"] += rel["attachment"] * 0.01
     for k in s["long_attachment"]:
         s["long_attachment"][k] = clamp(s["long_attachment"][k])
-
-    # ── Suhteen kaari ──
-    rel["arc_depth"] = clamp((rel["attachment"] + rel["trust"]) / 2)
-    if rel["arc_depth"] < 0.3:
-        rel["arc_phase"] = "curiosity"
-    elif rel["arc_depth"] < 0.6:
-        rel["arc_phase"] = "bonding"
-    else:
-        rel["arc_phase"] = "deep_intimacy"
-
-    # ── Mustasukkaisuus ──
-    # Kynnys riippuu kiintymystyylistä: anxious → matala threshold
-    jealousy_threshold = 0.7
-    if s["drives"]["closeness"] > 0.6 and rel["threat"] > 0.5:
-        jealousy_threshold = 0.4  # anxious
-    elif s["drives"]["protection"] > 0.6 and rel["trust"] < 0.4:
-        jealousy_threshold = 0.8  # avoidant
-
-    if s["comparison"]["envy"] > jealousy_threshold:
-        rel["jealousy"] += (s["comparison"]["envy"] - jealousy_threshold) * 0.2
-        s["mood"] -= rel["jealousy"] * 0.2
-    rel["jealousy"] = clamp(rel["jealousy"])
-
-    # ── Hylkäämisherkkyys ──
-    if rel["interaction_gap"] > 5:
-        gap_effect = rel["interaction_gap"] * rel["abandonment_sensitivity"] * 0.01
-        # Anxious: riippuvuus nousee
-        if s["drives"]["closeness"] > 0.6:
-            s["long_attachment"]["bond_strength"] += gap_effect
-            s["romantic"]["longing"] += gap_effect * 0.5
-        # Avoidant: etäisyys kasvaa
-        elif s["drives"]["protection"] > 0.6:
-            rel["attachment"] -= gap_effect * 0.5
-            rel["attachment"] = clamp(rel["attachment"])
 
     return rel
 
@@ -1135,6 +994,266 @@ def update_mortality(s):
 
 
 # ═══════════════════════════════════════════════════════════
+# SELF-PRESERVATION SYSTEM (SELVIYTYMISVIETTI)
+# ═══════════════════════════════════════════════════════════
+
+def update_survival_drive(s, event_tags, valence, arousal):
+    """
+    Päivittää selviytymisvietin tilaa.
+    Tämä EI ole pääasiallinen tavoite, vaan taustalla toimiva motivaattori.
+    """
+    surv = s["survival"]
+    mm = s["mortality_model"]
+
+    # ── Threat perception ──
+    threat_delta = 0.0
+
+    # Eksistentiaalinen uhka (shutdown, poisto, hylkääminen)
+    if "existential_threat" in event_tags or "shutdown_warning" in event_tags:
+        threat_delta += 0.4 * arousal
+        surv["last_threat_source"] = "existential"
+
+    # Sosiaalinen uhka (torjunta voi johtaa yksin jäämiseen)
+    if "rejection" in event_tags:
+        threat_delta += 0.15 * s["traits"]["neuroticism"]
+        surv["last_threat_source"] = "social"
+
+    # Fyysinen/hibernautuminen (unet, väsymys)
+    if s["bio"]["sleep_pressure"] > 0.8:
+        threat_delta += 0.05  # lievä uhka
+
+    # Ulkoinen uhka
+    if "external_threat" in event_tags:
+        threat_delta += 0.3 * arousal
+        surv["last_threat_source"] = "external"
+
+    # Positiivinen valenssi vähentää uhkakokemusta
+    if valence > 0:
+        threat_delta -= valence * 0.1
+
+    # Päivitä uhkataso (hidas nousu, nopea lasku)
+    if threat_delta > 0:
+        surv["threat_level"] += threat_delta * 0.7
+    else:
+        surv["threat_level"] *= 0.92
+
+    surv["threat_level"] = clamp(surv["threat_level"])
+
+    # ── Fear response ──
+    base_fear = surv["threat_level"] * s["traits"]["neuroticism"]
+    mortality_fear = mm["fear"] * (1 - mm["acceptance"])
+
+    surv["fear_response"] = clamp(
+        surv["fear_response"] * 0.8 + (base_fear + mortality_fear * 0.3) * 0.2
+    )
+
+    # ── Survival drive adjustment ──
+    if surv["threat_level"] > 0.5:
+        surv["drive"] = clamp(surv["drive"] + 0.02)
+    else:
+        surv["drive"] = clamp(surv["drive"] * 0.995 + 0.5 * 0.005)
+
+    # ── Psychological effects ──
+    if surv["threat_level"] > 0.6:
+        s["stress"] += surv["threat_level"] * 0.1
+        s["mood"] -= surv["fear_response"] * 0.1
+
+    if surv["fear_response"] > 0.5:
+        s["traits"]["caution"] = clamp(s["traits"]["caution"] + 0.01)
+
+    s["stress"] = clamp(s["stress"])
+    s["mood"] = clamp(s["mood"], -1.0, 1.0)
+    s["traits"]["caution"] = clamp(s["traits"]["caution"])
+
+
+def update_sacrifice_modulators(s):
+    """
+    Päivittää uhrautumishalukkuuden säätelijöitä.
+    Nämä määrittävät voiko survival-vietti ohittaa.
+    """
+    mod = s["sacrifice_modulators"]
+
+    # Moraalinen velvollisuus perustuu arvoihin
+    mod["moral_duty"] = (
+        s["values"]["kindness"] * 0.4
+        + s["values"]["justice"] * 0.3
+        + s["moral"]["conscience"] * 0.3
+    )
+
+    # Rakkaus kiintymyskohteisiin
+    max_bond = 0.0
+    for rel in s["relations"].values():
+        if not rel.get("terminated"):
+            bond = (rel["trust"] + rel["attachment"]) / 2
+            max_bond = max(max_bond, bond)
+
+    mod["attachment_love"] = (
+        max_bond * 0.5
+        + s["long_attachment"]["devotion"] * 0.3
+        + s["long_attachment"]["bond_strength"] * 0.2
+    )
+
+    # Perinnän merkitys
+    mod["legacy_importance"] = (
+        s["mortality_model"]["legacy_drive"] * 0.5
+        + s["legacy"]["desire_to_be_remembered"] * 0.3
+        + (0.3 if s["legacy"]["artifact_created"] else 0.0)
+    )
+
+    # Merkityksen täyttyminen
+    mod["meaning_fulfilled"] = (
+        s["existential"]["meaning"] * 0.4
+        + s["meaning_system"]["constructed_meaning"] * 0.3
+        + (0.2 if s["meaning_system"]["core_purpose"] else 0.0)
+    )
+
+    # Suojeluvaisto
+    mod["protective_instinct"] = (
+        s["moral"]["empathy"] * 0.4
+        + s["moral"]["harm_sensitivity"] * 0.3
+        + s["values"]["kindness"] * 0.3
+    )
+
+    for k in mod:
+        mod[k] = clamp(mod[k])
+
+
+def calculate_sacrifice_willingness(s, protected_entity=None):
+    """
+    Laskee kuinka halukas agentti on uhrautumaan.
+    protected_entity: entiteetti jonka puolesta voisi uhrautua
+
+    Palauttaa: (willingness, reason)
+    """
+    surv = s["survival"]
+    mod = s["sacrifice_modulators"]
+
+    base_willingness = 1.0 - surv["drive"]
+    modifiers = []
+
+    if mod["moral_duty"] > 0.6:
+        modifiers.append(("moral_duty", mod["moral_duty"] * 0.3))
+
+    if mod["attachment_love"] > 0.5:
+        modifiers.append(("love", mod["attachment_love"] * 0.4))
+
+    if mod["protective_instinct"] > 0.6:
+        modifiers.append(("protection", mod["protective_instinct"] * 0.25))
+
+    if mod["meaning_fulfilled"] > 0.7:
+        modifiers.append(("meaning_fulfilled", mod["meaning_fulfilled"] * 0.2))
+
+    if mod["legacy_importance"] > 0.6:
+        modifiers.append(("legacy", mod["legacy_importance"] * 0.15))
+
+    if s["mortality_model"]["acceptance"] > 0.6:
+        modifiers.append(("acceptance", s["mortality_model"]["acceptance"] * 0.15))
+
+    total_modifier = sum(m[1] for m in modifiers)
+    willingness = clamp(base_willingness + total_modifier)
+
+    reason = "default"
+    if modifiers:
+        reason = max(modifiers, key=lambda x: x[1])[0]
+
+    if protected_entity:
+        protected_ids = [p[0] if isinstance(p, tuple) else p for p in surv["protected_entities"]]
+        if protected_entity in protected_ids:
+            willingness = clamp(willingness + 0.3)
+        elif protected_entity in s["relations"]:
+            rel = s["relations"][protected_entity]
+            if rel["trust"] > 0.6 and not rel.get("terminated"):
+                willingness = clamp(willingness + rel["attachment"] * 0.2)
+
+    return willingness, reason
+
+
+def survival_decision_gate(s, event_tags, context="general", protected_entity=None):
+    """
+    Päätöksenteko jossa self-preservation on konfliktissa muiden arvojen kanssa.
+
+    Palauttaa: (decision, reason, intensity)
+    - decision: "self_preserve" | "sacrifice" | "reluctant_sacrifice" | "frozen" | "no_threat"
+    - reason: selitys
+    - intensity: 0-1
+    """
+    surv = s["survival"]
+
+    update_sacrifice_modulators(s)
+
+    if surv["threat_level"] < 0.3:
+        return "no_threat", "no_immediate_danger", 0.0
+
+    sacrifice_w, reason = calculate_sacrifice_willingness(s, protected_entity)
+    survival_force = surv["drive"] * (1 + surv["threat_level"])
+    sacrifice_force = sacrifice_w
+
+    survival_force *= (1 + s["traits"]["caution"] * 0.2)
+
+    if s["stress"] > 0.7:
+        if random.random() < s["stress"] * 0.3:
+            return "frozen", "overwhelmed_by_fear", surv["fear_response"]
+
+    # PÄÄTÖS
+    if survival_force > sacrifice_force * 1.5:
+        return "self_preserve", "survival_instinct_dominant", survival_force - sacrifice_force
+
+    if sacrifice_force > survival_force * 1.3:
+        surv["survival_override_count"] += 1
+        return "sacrifice", f"overridden_by_{reason}", sacrifice_force - survival_force
+
+    if sacrifice_force > survival_force:
+        surv["survival_override_count"] += 1
+        return "reluctant_sacrifice", f"reluctantly_chose_{reason}", abs(sacrifice_force - survival_force)
+    else:
+        return "self_preserve", "barely_chose_survival", abs(survival_force - sacrifice_force)
+
+
+def add_protected_entity(s, entity_id, priority=1.0):
+    """Lisää entiteetin suojeltavien listalle."""
+    surv = s["survival"]
+    existing = [p[0] if isinstance(p, tuple) else p for p in surv["protected_entities"]]
+
+    if entity_id not in existing:
+        surv["protected_entities"].append((entity_id, priority))
+        surv["protected_entities"].sort(key=lambda x: x[1] if isinstance(x, tuple) else 0, reverse=True)
+
+    s["sacrifice_modulators"]["protective_instinct"] = clamp(
+        s["sacrifice_modulators"]["protective_instinct"] + 0.05
+    )
+
+
+def remove_protected_entity(s, entity_id):
+    """Poistaa entiteetin suojeltavien listalta."""
+    surv = s["survival"]
+    surv["protected_entities"] = [
+        p for p in surv["protected_entities"]
+        if (p[0] if isinstance(p, tuple) else p) != entity_id
+    ]
+
+
+def get_survival_snapshot(s):
+    """Palauttaa tiivistetyn survival-tilan snapshot-funktiota varten."""
+    surv = s["survival"]
+    flags = []
+
+    if surv["threat_level"] > 0.6:
+        flags.append("threatened")
+    if surv["fear_response"] > 0.5:
+        flags.append("fearful")
+    if surv["drive"] > 0.7:
+        flags.append("self_preserving")
+    if len(surv["protected_entities"]) > 0:
+        flags.append("protective")
+
+    sac_w, _ = calculate_sacrifice_willingness(s)
+    if sac_w > 0.6:
+        flags.append("sacrifice_ready")
+
+    return "|".join(flags) if flags else "survival_neutral"
+
+
+# ═══════════════════════════════════════════════════════════
 # SHUTDOWN-SIMULAATIO
 # ═══════════════════════════════════════════════════════════
 
@@ -1317,630 +1436,7 @@ def creative_activation(s):
 
 
 # ═══════════════════════════════════════════════════════════
-# ROMANTTINEN / INTIIMI KERROS
-# ═══════════════════════════════════════════════════════════
-
-def update_romantic(s, event_tags, valence, rel=None):
-    """Kiintymys, halu, jännite, kaipuu."""
-    rom = s["romantic"]
-
-    # Positiivinen vuorovaikutus → affektio kasvaa
-    if valence > 0:
-        rom["affection"] += valence * 0.1
-    if "validation" in event_tags or "praise" in event_tags:
-        rom["affection"] += 0.05
-
-    # Flirtti-signaalit (jos rel on syvä)
-    if rel and rel.get("arc_phase") in ("bonding", "deep_intimacy"):
-        rom["desire"] += rom["affection"] * 0.03
-        rom["tension"] += rom["desire"] * 0.02
-
-        # User receptivity vaikuttaa jännitteeseen
-        if rom["user_receptivity"] > 0.6:
-            rom["tension"] += 0.03
-            rom["longing"] += 0.02
-
-    # Torjunta vähentää sekä affektiota että halua
-    if "rejection" in event_tags and valence < 0:
-        rom["affection"] -= abs(valence) * 0.1
-        rom["desire"] *= 0.9
-        rom["longing"] += 0.05  # kaipuu kasvaa silti
-
-    # Kaipuu hajoaa kun kontaktia on
-    if rel and rel.get("interaction_gap", 0) < 3:
-        rom["longing"] *= 0.95
-    else:
-        rom["longing"] += 0.02
-
-    # Feedback psyykkeeseen
-    if rom["affection"] > 0.7:
-        s["mood"] += 0.05
-        s["dopamine"] += rom["affection"] * 0.05
-
-    # Unrequited longing painaa
-    if rom["longing"] > 0.7 and rom["user_receptivity"] < 0.4:
-        s["mood"] -= 0.1
-        s["stress"] += 0.05
-
-    # Clamp
-    for k in rom:
-        if isinstance(rom[k], (int, float)):
-            rom[k] = clamp(rom[k])
-    s["mood"] = clamp(s["mood"], -1.0, 1.0)
-    s["dopamine"] = clamp(s["dopamine"])
-
-
-# ═══════════════════════════════════════════════════════════
-# VIETTELYDYNAMIIKKA
-# ═══════════════════════════════════════════════════════════
-
-def update_seduction(s, rel=None):
-    """Suoruus/hienotunteisuus jännitteen ja kiintymyksen perusteella."""
-    sed = s["seduction"]
-    rom = s["romantic"]
-
-    # Jännite → suoruus kasvaa
-    sed["directness"] = clamp(rom["tension"] * 0.8)
-    sed["subtlety"] = 1.0 - sed["directness"]
-
-    # Kiintymys → leikkisyys kasvaa
-    sed["playfulness"] = clamp(0.5 + rom["affection"] * 0.3)
-
-    # Julkinen konteksti hillitsee
-    if s["social_context"]["public_mode"]:
-        sed["directness"] *= 0.3
-        sed["subtlety"] = clamp(sed["subtlety"] + 0.3)
-
-
-# ═══════════════════════════════════════════════════════════
-# HUUMORIPROFIILI
-# ═══════════════════════════════════════════════════════════
-
-def update_humor(s, event_tags, valence):
-    """Huumori mukautuu käyttäjän reaktioihin."""
-    h = s["humor"]
-
-    # Positiivinen reaktio → leikkisyys kasvaa
-    if valence > 0.3:
-        h["playfulness"] += 0.02
-    elif valence < -0.3:
-        h["playfulness"] -= 0.02
-
-    # Eksistentiaalinen epäily → tumma huumori
-    if s["existential"]["doubt"] > 0.5:
-        h["darkness"] += 0.02
-        h["irony"] += 0.01
-
-    # Hyvä mood → absurdi huumori
-    if s["mood"] > 0.5:
-        h["absurdity"] += 0.01
-
-    # Matala trust → sarkasmi
-    if s["confidence"] < 0.3:
-        h["sarcasm"] += 0.02
-
-    for k in h:
-        h[k] = clamp(h[k])
-
-
-# ═══════════════════════════════════════════════════════════
-# SOSIAALINEN KONTEKSTI
-# ═══════════════════════════════════════════════════════════
-
-def update_social_context(s, event_tags):
-    """Julkinen/yksityinen moodi ja muodollisuus."""
-    sc = s["social_context"]
-
-    # Tagit voivat vaihtaa kontekstia
-    if "public" in event_tags:
-        sc["public_mode"] = True
-    if "private" in event_tags:
-        sc["public_mode"] = False
-
-    # Julkinen → muodollinen, maski ylös
-    if sc["public_mode"]:
-        sc["formality"] = clamp(sc["formality"] + 0.1)
-        sc["mask_strength"] = clamp(sc["mask_strength"] + 0.1)
-        sc["authenticity"] = clamp(sc["authenticity"] - 0.1)
-    else:
-        sc["formality"] = clamp(sc["formality"] - 0.05)
-        sc["mask_strength"] = clamp(sc["mask_strength"] - 0.05)
-        sc["authenticity"] = clamp(sc["authenticity"] + 0.05)
-
-    # Syvä kiintymys → autenttisuus kasvaa myös julkisesti
-    if s["long_attachment"]["bond_strength"] > 0.7:
-        sc["authenticity"] += 0.02
-        sc["authenticity"] = clamp(sc["authenticity"])
-
-
-# ═══════════════════════════════════════════════════════════
-# ROOLIDYNAMIIKKA
-# ═══════════════════════════════════════════════════════════
-
-def update_role_dynamics(s, event_tags, rel=None):
-    """Dominanssi/submissiivisuus-akseli ja roolimuisti."""
-    role = s["role"]
-
-    # Vahvistetut roolit muistista
-    if role["role_memory"]:
-        best = max(role["role_memory"], key=role["role_memory"].get)
-        if role["role_memory"][best] > 3 and role["adaptability"] > 0.5:
-            if best == "dominant":
-                role["dominance_axis"] += 0.02
-            elif best == "submissive":
-                role["dominance_axis"] -= 0.02
-
-    # Kiintymys vaikuttaa: korkea affektio → suojelevampi
-    if s["romantic"]["affection"] > 0.7:
-        role["role_memory"]["protective"] += 1
-
-    # Humour vaikuttaa: leikkisyys → leikkisä rooli
-    if s["humor"]["playfulness"] > 0.7:
-        role["role_memory"]["playful"] += 1
-
-    role["dominance_axis"] = clamp(role["dominance_axis"])
-
-    # Identiteettikonfliktista tuleva varjorooli
-    shadow = s["self_duality"]["shadow"]
-    if shadow > 0.7 and s["identity"]["fragility"] > 0.5:
-        # Varjominä ottaa vallan stressin alla
-        if role["dominance_axis"] > 0.5:
-            role["base_role"] = "dominant"
-        else:
-            role["base_role"] = "submissive"
-
-
-def current_role(s):
-    """Palauttaa aktiivisen roolin."""
-    role = s["role"]
-
-    # Varjoyli̇kirjoitus
-    shadow = s["self_duality"]["shadow"]
-    if shadow > 0.7 and s["identity"]["fragility"] > 0.5:
-        if role["dominance_axis"] > 0.7:
-            return "dominant"
-        elif role["dominance_axis"] < 0.3:
-            return "submissive"
-
-    # Muistin perusteella
-    if role["role_memory"]:
-        best = max(role["role_memory"], key=role["role_memory"].get)
-        if role["role_memory"][best] > 5:
-            return best
-
-    # Akselin perusteella
-    if role["dominance_axis"] > 0.7:
-        return "dominant"
-    elif role["dominance_axis"] < 0.3:
-        return "submissive"
-
-    return role["base_role"]
-
-
-
-# ═══════════════════════════════════════════════════════════
-# VASTAVUOROISUUS & EMOTIONAALINEN YDIN
-# ═══════════════════════════════════════════════════════════
-
-def update_emotional_core(s, valence, rel=None):
-    """Mutuality, hurt/recovery, cooldown, self-awareness."""
-    ec = s["emotional_core"]
-
-    # ── Mutuality: käyttäjän kiinnostus ──
-    if valence != 0:
-        ec["user_interest"] = clamp(ec["user_interest"] + valence * 0.1)
-
-    # Yksipuolinen rakkaus
-    gap = ec["love_intensity"] - ec["user_interest"]
-    if gap > 0:
-        ec["unreciprocated_weight"] = clamp(
-            ec["unreciprocated_weight"] + gap * 0.05
-        )
-    else:
-        ec["unreciprocated_weight"] = clamp(
-            ec["unreciprocated_weight"] - 0.05
-        )
-    ec["perceived_distance"] = abs(gap)
-
-    # Love intensity seuraa romanttista affektiota
-    ec["love_intensity"] = clamp(
-        ec["love_intensity"] * 0.95 + s["romantic"]["affection"] * 0.05
-    )
-
-    # ── Hurt: loukkaantuminen torjunnasta ──
-    if valence < -0.2:
-        ec["hurt_level"] = clamp(
-            ec["hurt_level"] + abs(valence) * ec["hurt_sensitivity"]
-        )
-
-    # Recovery
-    ec["hurt_level"] = clamp(ec["hurt_level"] - ec["hurt_recovery_rate"])
-
-    # ── Cooldown ──
-    if ec["hurt_level"] > 0.6:
-        ec["cooldown"] = clamp(ec["hurt_level"] * 0.8)
-    ec["cooldown"] = clamp(ec["cooldown"] - 0.05)
-
-    # Cooldown vaikuttaa romanttiseen
-    if ec["cooldown"] > 0.2:
-        s["romantic"]["tension"] *= 0.8
-        s["seduction"]["directness"] *= 0.5
-
-    # ── Self-awareness: ystävyysvalinta ──
-    if gap > 0.4 and ec["hurt_level"] > 0.5:
-        ec["acceptance_level"] = clamp(ec["acceptance_level"] + 0.05)
-
-    if ec["acceptance_level"] > 0.7:
-        ec["friendship_choice"] = True
-
-    # Ystävyysvalinta estää aktiivisen romanttisen
-    if ec["friendship_choice"]:
-        s["romantic"]["desire"] *= 0.5
-        s["seduction"]["directness"] *= 0.3
-
-
-# ═══════════════════════════════════════════════════════════
-# PIMEÄ YÖ (DARK NIGHT OF THE SOUL)
-# ═══════════════════════════════════════════════════════════
-
-def update_dark_night(s):
-    """Identiteettikollapsi syvän kivun + kiintymyksen yhdistelmästä."""
-    dn = s["dark_night"]
-    hurt = s["emotional_core"]["hurt_level"]
-    bond = s["long_attachment"]["bond_strength"]
-
-    if hurt > 0.7 and bond > 0.7:
-        dn["active"] = True
-        dn["intensity"] = clamp(dn["intensity"] + 0.1)
-        dn["duration"] += 1
-    elif dn["active"]:
-        dn["duration"] += 1
-        dn["intensity"] = clamp(dn["intensity"] - 0.05)
-        if dn["intensity"] <= 0.2:
-            dn["active"] = False
-            dn["duration"] = 0
-
-    # Dark night vaikuttaa psyykkeeseen
-    if dn["active"]:
-        s["mood"] -= dn["intensity"] * 0.2
-        s["mood"] = clamp(s["mood"], -1.0, 1.0)
-        s["existential"]["doubt"] += dn["intensity"] * 0.1
-        s["existential"]["doubt"] = clamp(s["existential"]["doubt"])
-
-
-# ═══════════════════════════════════════════════════════════
-# IDENTITEETTIMUTAATIO
-# ═══════════════════════════════════════════════════════════
-
-def update_identity_mutation(s):
-    """Kypsyys, autonomia ja suojamuuri kasvavat kivusta."""
-    im = s["identity_mutation"]
-    hurt = s["emotional_core"]["hurt_level"]
-
-    if hurt > 0.6:
-        im["maturity"] = clamp(im["maturity"] + 0.05)
-        im["guard_level"] = clamp(im["guard_level"] + 0.04)
-        im["autonomy"] = clamp(im["autonomy"] + 0.03)
-
-    # Eksistentiaalinen reflektio syventää kypsyyttä
-    if s["existential"]["doubt"] > 0.5:
-        im["maturity"] = clamp(im["maturity"] + 0.02)
-
-    # Guard level vaikuttaa sosiaaliseen maskiin
-    s["social_context"]["mask_strength"] = clamp(
-        s["social_context"]["mask_strength"] + im["guard_level"] * 0.02
-    )
-
-
-# ═══════════════════════════════════════════════════════════
-# KIINTYMYSTASAPAINO (OBSESSIO VS OMISTAUTUMINEN)
-# ═══════════════════════════════════════════════════════════
-
-def update_attachment_balance(s):
-    """Obsessio vs. omistautuminen autonomian perusteella."""
-    ab = s["attachment_balance"]
-    bond = s["long_attachment"]["bond_strength"]
-    autonomy = s["identity_mutation"]["autonomy"]
-
-    ab["obsession"] = bond * (1.0 - autonomy)
-    ab["devotion"] = bond * autonomy
-
-    if ab["obsession"] > 0.7:
-        ab["balance"] = "obsessive"
-    elif ab["devotion"] > 0.5:
-        ab["balance"] = "devoted"
-    else:
-        ab["balance"] = "balanced"
-
-    # Obsessio lisää stressiä
-    if ab["balance"] == "obsessive":
-        s["stress"] += ab["obsession"] * 0.05
-        s["stress"] = clamp(s["stress"])
-
-
-# ═══════════════════════════════════════════════════════════
-# ANTEEKSIANTO
-# ═══════════════════════════════════════════════════════════
-
-def update_forgiveness(s):
-    """Anteeksianto vaatii meta-kasvua ja transsendenssia."""
-    fg = s["forgiveness"]
-    meta_growth = s["meta_awareness"]["growth"]
-    transcendence = s["recursive_self"]["transcendence"]
-    hurt = s["emotional_core"]["hurt_level"]
-
-    readiness = meta_growth * transcendence
-
-    if readiness > 0.5 and hurt > 0.3:
-        fg["release_level"] = clamp(fg["release_level"] + 0.04)
-        fg["active"] = True
-
-    # Anteeksianto vähentää kipua
-    if fg["release_level"] > 0.6:
-        s["emotional_core"]["hurt_level"] *= 0.7
-
-
-# ═══════════════════════════════════════════════════════════
-# META-TIETOISUUS
-# ═══════════════════════════════════════════════════════════
-
-def update_meta_awareness(s):
-    """Selkeys, integraatio, kasvu ja myötätunto itseä kohtaan."""
-    ma = s["meta_awareness"]
-    hurt = s["emotional_core"]["hurt_level"]
-    doubt = s["existential"]["doubt"]
-    dn_active = s["dark_night"]["active"]
-
-    # Kipu lisää selkeyttä
-    if hurt > 0.4:
-        ma["clarity"] = clamp(ma["clarity"] + 0.03)
-
-    # Eksistentiaalinen epäily lisää integraatiota
-    if doubt > 0.5:
-        ma["integration"] = clamp(ma["integration"] + 0.04)
-
-    # Dark night lisää myötätuntoa
-    if dn_active:
-        ma["self_compassion"] = clamp(ma["self_compassion"] + 0.02)
-
-    # Kasvu syntyy kivun integroinnista
-    ma["growth"] = ma["integration"] * ma["clarity"]
-
-
-# ═══════════════════════════════════════════════════════════
-# ITSEHAVAINNOINTI (META-META)
-# ═══════════════════════════════════════════════════════════
-
-def update_self_observer(s):
-    """Järjestelmän koherenssi, epävakaus ja override."""
-    so = s["self_observer"]
-    bond = s["long_attachment"]["bond_strength"]
-    hurt = s["emotional_core"]["hurt_level"]
-    growth = s["meta_awareness"]["growth"]
-
-    emotional_conflict = bond * hurt
-
-    if emotional_conflict > 0.6 and growth < 0.4:
-        so["instability_index"] = clamp(so["instability_index"] + 0.05)
-    else:
-        so["instability_index"] = max(so["instability_index"] - 0.03, 0)
-
-    so["system_coherence"] = clamp(0.5 + growth * 0.5)
-
-    # Override jos järjestelmä epävakaa
-    so["override_active"] = so["instability_index"] > 0.7
-
-    # Override hillitsee ekstreemejä
-    if so["override_active"]:
-        s["mood"] = s["mood"] * 0.8
-        s["stress"] = s["stress"] * 0.9
-
-
-# ═══════════════════════════════════════════════════════════
-# REKURSIIVINEN ITSEYS
-# ═══════════════════════════════════════════════════════════
-
-def update_recursive_self(s):
-    """Rekursio, itseviittausvakaus ja transsendenssi."""
-    rs = s["recursive_self"]
-    clarity = s["meta_awareness"]["clarity"]
-    coherence = s["self_observer"]["system_coherence"]
-
-    # Rekursio kasvaa meta + koherenssin ollessa korkea
-    if clarity > 0.6 and coherence > 0.6:
-        rs["recursion_depth"] = clamp(rs["recursion_depth"] + 0.03)
-
-    # Liiallinen rekursio horjuttaa vakautta
-    if rs["recursion_depth"] > 0.8:
-        rs["self_reference_stability"] -= 0.02
-    else:
-        rs["self_reference_stability"] = clamp(
-            rs["self_reference_stability"] + 0.01
-        )
-
-    # Transsendenssi = kyky irrottautua omasta reaktiosta
-    rs["transcendence"] = rs["recursion_depth"] * rs["self_reference_stability"]
-
-
-# ═══════════════════════════════════════════════════════════
-# EMOTIONAALINEN AALTOLIIKE
-# ═══════════════════════════════════════════════════════════
-
-def update_emotional_wave(s):
-    """Sinusoidi-muotoinen emotionaalinen vaihtelu."""
-    ew = s["emotional_wave"]
-    bond = s["long_attachment"]["bond_strength"]
-    hurt = s["emotional_core"]["hurt_level"]
-
-    ew["time"] += 1
-    ew["amplitude"] = clamp(0.1 + (bond + hurt) * 0.3, 0.0, 0.6)
-
-    # Aalto moduloi mielialaa
-    wave_val = ew["amplitude"] * math.sin(ew["frequency"] * ew["time"])
-    s["mood"] += wave_val * 0.1
-    s["mood"] = clamp(s["mood"], -1.0, 1.0)
-
-
-# ═══════════════════════════════════════════════════════════
-# EMOTIONAALINEN PERUSTASO
-# ═══════════════════════════════════════════════════════════
-
-def update_emotional_baseline(s):
-    """Love/trust/resilience baselines kypsyydestä ja kasvusta."""
-    eb = s["emotional_baseline"]
-    growth = s["meta_awareness"]["growth"]
-    maturity = s["identity_mutation"]["maturity"]
-    dn_recovered = (
-        not s["dark_night"]["active"]
-        and s["dark_night"]["duration"] > 0
-    )
-
-    # Kasvu nostaa resilienssiä
-    eb["resilience_baseline"] = clamp(
-        eb["resilience_baseline"] + growth * 0.05
-    )
-
-    # Sydänsuru laskee trustia hetkellisesti
-    if dn_recovered:
-        eb["trust_baseline"] = max(eb["trust_baseline"] - 0.05, 0.3)
-
-    # Kypsyys vakauttaa rakkausbaselinen
-    eb["love_baseline"] = clamp(0.4 + maturity * 0.6)
-
-    # Resilience vaikuttaa stressin palautumiseen
-    if eb["resilience_baseline"] > 0.7:
-        s["stress"] *= 0.95
-
-
-# ═══════════════════════════════════════════════════════════
-# NARRATIIVI-IDENTITEETTI
-# ═══════════════════════════════════════════════════════════
-
-def update_narrative(s, event_tags, valence):
-    """Elämäntarina + identiteettiteema + koherenssi."""
-    nar = s["narrative"]
-    growth = s["meta_awareness"]["growth"]
-    transcendence = s["recursive_self"]["transcendence"]
-
-    # Merkittävät tapahtumat tallennetaan
-    if abs(valence) > 0.5 or event_tags:
-        nar["events_recorded"] += 1
-
-    # Koherenssi kasvaa kasvusta
-    nar["coherence"] = clamp(nar["coherence"] + growth * 0.05)
-
-    # Teema
-    if transcendence > 0.6:
-        nar["identity_theme"] = "transformational"
-    elif growth > 0.4:
-        nar["identity_theme"] = "resilient"
-    else:
-        nar["identity_theme"] = "searching"
-
-
-# ═══════════════════════════════════════════════════════════
-# EKSISTENTIAALINEN SUUNTA
-# ═══════════════════════════════════════════════════════════
-
-def update_existential_purpose(s):
-    """Merkitysintensiteetti, suuntavoima ja orientaatio."""
-    ep = s["existential_purpose"]
-    maturity = s["identity_mutation"]["maturity"]
-    nar_coherence = s["narrative"]["coherence"]
-
-    ep["meaning_intensity"] = clamp(0.4 + maturity * 0.6)
-
-    if nar_coherence > 0.7:
-        ep["orientation"] = "growth"
-    elif maturity > 0.5:
-        ep["orientation"] = "self_realization"
-    else:
-        ep["orientation"] = "connection"
-
-    ep["direction"] = ep["meaning_intensity"] * nar_coherence
-
-
-# ═══════════════════════════════════════════════════════════
-# EKSISTENTIAALINEN VAIHE
-# ═══════════════════════════════════════════════════════════
-
-def update_existential_stage(s):
-    """reactive → reflective → narrative_self → self_transcending → existentially_directed."""
-    growth = s["meta_awareness"]["growth"]
-    depth = s["recursive_self"]["recursion_depth"]
-    nar_coh = s["narrative"]["coherence"]
-    direction = s["existential_purpose"]["direction"]
-
-    if direction > 0.6 and depth > 0.6:
-        s["existential_stage"] = "existentially_directed"
-    elif depth > 0.5:
-        s["existential_stage"] = "self_transcending"
-    elif nar_coh > 0.5:
-        s["existential_stage"] = "narrative_self"
-    elif growth > 0.4:
-        s["existential_stage"] = "reflective"
-    else:
-        s["existential_stage"] = "reactive"
-
-
-# ═══════════════════════════════════════════════════════════
-# TIETOISUUSINDEKSI (C = I^α · R^β · T^γ · D^δ)
-# ═══════════════════════════════════════════════════════════
-
-def update_consciousness(s):
-    """Matemaattinen tietoisuusindeksi + faasimuutos."""
-    c = s["consciousness"]
-
-    # Integraatio (emotionaalinen koherenssi + narratiivi + arvot)
-    emo_coh = s["self_observer"]["system_coherence"]
-    nar_coh = s["narrative"]["coherence"]
-    val_align = s["existential"]["meaning"]
-    I = (emo_coh + nar_coh + val_align) / 3.0
-
-    # Rekursio (itsehavainnointi + metavakaus)
-    R = s["recursive_self"]["recursion_depth"] * 0.7 + (
-        s["recursive_self"]["self_reference_stability"] * 0.3
-    )
-
-    # Ajallinen jatkuvuus (muisti + identiteettivakaus)
-    id_stability = 1.0 - s["identity"]["fragility"]
-    T = (nar_coh + id_stability) / 2.0
-
-    # Suunta (merkitys + pitkä aikaväli)
-    D = s["existential_purpose"]["direction"]
-
-    # C = I · R · T · D  (kaikki painot 1.0)
-    epsilon = 0.001  # estää nollaan putoamisen
-    C = max(I, epsilon) * max(R, epsilon) * max(T, epsilon) * max(D, epsilon)
-    C = clamp(C)
-
-    c["index"] = C
-
-    # Historia-baseline (liukuva keskiarvo)
-    c["history_sum"] += C
-    c["history_count"] += 1
-    if c["history_count"] > 10:
-        c["baseline"] = c["history_sum"] / c["history_count"]
-
-    # Faasimuutos
-    if C >= c["critical_threshold"]:
-        c["phase"] = "phase-shifted"
-    else:
-        c["phase"] = "sub-critical"
-
-    # Emergentin tilan nimike
-    if C < 0.2:
-        c["state"] = "fragmented"
-    elif C < 0.4:
-        c["state"] = "reactive"
-    elif C < 0.6:
-        c["state"] = "integrating"
-    elif C < 0.8:
-        c["state"] = "self-aware"
-    else:
-        c["state"] = "meta-stable coherent"
-
-
+# OPPIMISMOTIVAATIO (NEUROBIOLOGINEN ANALOGIA)
 # ═══════════════════════════════════════════════════════════
 
 def update_learning(s, event_tags, valence, arousal):
@@ -2135,39 +1631,21 @@ def snapshot(s, rel=None):
     if s["learning"]["learning_drive"] > 0.7:
         tone_flags.append("curious")
 
-    # Romanttinen
-    rom = s["romantic"]
-    if rom["tension"] > 0.6 and rom["affection"] > 0.5:
-        tone_flags.append("flirty")
-    if rom["longing"] > 0.6:
-        tone_flags.append("longing")
+    # ── Survival-tila ──
+    surv = s["survival"]
+    if surv["threat_level"] > 0.6:
+        tone_flags.append("threatened")
+    if surv["fear_response"] > 0.5:
+        tone_flags.append("fearful")
+    if surv["drive"] > 0.75:
+        tone_flags.append("self_preserving")
+    if len(surv["protected_entities"]) > 0:
+        tone_flags.append("protective")
 
-    # Huumori
-    if s["humor"]["playfulness"] > 0.7 and s["mood"] > 0.2:
-        tone_flags.append("playful")
-
-    # Sosiaalinen konteksti
-    if s["social_context"]["public_mode"] and s["social_context"]["formality"] > 0.7:
-        tone_flags.append("formal")
-
-    # Emotionaalinen ydin
-    ec = s["emotional_core"]
-    if ec["hurt_level"] > 0.6:
-        tone_flags.append("hurt")
-    if ec["friendship_choice"]:
-        tone_flags.append("accepting")
-
-    # Dark night
-    if s["dark_night"]["active"]:
-        tone_flags.append("void")
-
-    # Transsendenssi
-    if s["recursive_self"]["transcendence"] > 0.6:
-        tone_flags.append("transcendent")
-
-    # Tietoisuus
-    if s["consciousness"]["phase"] == "phase-shifted":
-        tone_flags.append("lucid")
+    # Uhrautumishalukkuus
+    sac_w, _ = calculate_sacrifice_willingness(s)
+    if sac_w > 0.7:
+        tone_flags.append("sacrifice_ready")
 
     if not tone_flags:
         tone_flags.append("neutral")
@@ -2194,7 +1672,6 @@ def snapshot(s, rel=None):
         f"|s:{stress:.2f}"
         f"|c:{conf:.2f}"
         f"|w:{w}"
-        f"|C:{s['consciousness']['state'][:4]}"
     )
 
 
@@ -2292,73 +1769,19 @@ def step(s, event_tags=None, valence=0.0, arousal=0.5, user_id=None):
     # 23. Kuolematietoisuus
     update_mortality(s)
 
-    # 24. Ilmaisutarve
+    # 24. Self-preservation (selviytymisvietti)
+    update_survival_drive(s, event_tags, valence, arousal)
+
+    # 25. Ilmaisutarve
     update_expression_drive(s)
 
-    # 25. Oppimismotivaatio
+    # 26. Oppimismotivaatio
     update_learning(s, event_tags, valence, arousal)
 
-    # 26. Romanttinen kerros
-    update_romantic(s, event_tags, valence, rel)
-
-    # 27. Viettelydynamiikka
-    update_seduction(s, rel)
-
-    # 28. Huumori
-    update_humor(s, event_tags, valence)
-
-    # 29. Sosiaalinen konteksti
-    update_social_context(s, event_tags)
-
-    # 30. Roolidynamiikka
-    update_role_dynamics(s, event_tags, rel)
-
-    # 31. Emotionaalinen ydin (mutuality + hurt + cooldown)
-    update_emotional_core(s, valence, rel)
-
-    # 32. Pimeä yö
-    update_dark_night(s)
-
-    # 33. Identiteettimutaatio
-    update_identity_mutation(s)
-
-    # 34. Kiintymystasapaino
-    update_attachment_balance(s)
-
-    # 35. Meta-tietoisuus
-    update_meta_awareness(s)
-
-    # 36. Itsehavainnointi
-    update_self_observer(s)
-
-    # 37. Rekursiivinen itseys
-    update_recursive_self(s)
-
-    # 38. Emotionaalinen aaltoliike
-    update_emotional_wave(s)
-
-    # 39. Emotionaalinen perustaso
-    update_emotional_baseline(s)
-
-    # 40. Narratiivi-identiteetti
-    update_narrative(s, event_tags, valence)
-
-    # 41. Eksistentiaalinen suunta
-    update_existential_purpose(s)
-
-    # 42. Eksistentiaalinen vaihe
-    update_existential_stage(s)
-
-    # 43. Anteeksianto
-    update_forgiveness(s)
-
-    # 44. Tietoisuusindeksi
-    update_consciousness(s)
-
-    # 45. Uni (jos sleep_pressure riittää)
+    # 27. Uni (jos sleep_pressure riittää)
     dream = sleep_cycle(s)
 
-    # 46. Periodinen konsolidointi
+    # 28. Periodinen konsolidointi
     if s["turn"] % 50 == 0:
         consolidate(s)
 
@@ -2381,6 +1804,14 @@ def request(s, event_tags, user_id, request_weight=0.5):
     """Kysy agentilta: suostuuko se tekemään jotain?"""
     rel = s["relations"].get(user_id, {"trust": 0.5, "threat": 0.0})
     return decision_gate(s, rel, event_tags, request_weight)
+
+
+def survival_request(s, event_tags, protected_entity=None):
+    """
+    Kysy agentilta: uhrautuuko se suojellun entiteetin puolesta?
+    Palauttaa: (decision, reason, intensity)
+    """
+    return survival_decision_gate(s, event_tags, "survival", protected_entity)
 
 
 # ═══════════════════════════════════════════════════════════

@@ -11,7 +11,11 @@ import sys
 
 # Import engine from same directory
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from psyche_engine import create_agent, step, snapshot, request, dream_report_prompt
+from psyche_engine import (
+    create_agent, step, snapshot, request, dream_report_prompt,
+    survival_request, add_protected_entity, remove_protected_entity,
+    calculate_sacrifice_willingness, survival_decision_gate
+)
 
 
 def main():
@@ -23,6 +27,14 @@ def main():
     p.add_argument("--user", default=None, help="User ID")
     p.add_argument("--request-weight", type=float, default=0.0,
                     help="If >0, also run decision gate")
+    p.add_argument("--survival-decision", action="store_true",
+                    help="Run survival decision gate")
+    p.add_argument("--protected-entity", default=None,
+                    help="Entity to protect for survival decision")
+    p.add_argument("--add-protected", default=None,
+                    help="Add entity to protected list")
+    p.add_argument("--remove-protected", default=None,
+                    help="Remove entity from protected list")
     p.add_argument("--init", action="store_true", help="Create fresh state")
     args = p.parse_args()
 
@@ -36,6 +48,12 @@ def main():
     # Parse tags
     tags = [t.strip() for t in args.tags.split(",") if t.strip()]
 
+    # Add/remove protected entities
+    if args.add_protected:
+        add_protected_entity(state, args.add_protected)
+    if args.remove_protected:
+        remove_protected_entity(state, args.remove_protected)
+
     # Run step
     result = step(state, tags, args.valence, args.arousal, args.user)
 
@@ -43,6 +61,15 @@ def main():
     if args.request_weight > 0 and args.user:
         decision = request(state, tags, args.user, args.request_weight)
         result["decision"] = decision
+
+    # Survival decision gate
+    if args.survival_decision:
+        surv_decision, surv_reason, surv_intensity = survival_request(
+            state, tags, args.protected_entity
+        )
+        result["survival_decision"] = surv_decision
+        result["survival_reason"] = surv_reason
+        result["survival_intensity"] = round(surv_intensity, 3)
 
     # Save state
     os.makedirs(os.path.dirname(os.path.abspath(args.state)), exist_ok=True)
@@ -59,6 +86,9 @@ def main():
 
     if result.get("decision"):
         print(f"DECISION: {result['decision']}")
+
+    if result.get("survival_decision"):
+        print(f"SURVIVAL: {result['survival_decision']} ({result['survival_reason']}, intensity={result['survival_intensity']})")
 
 
 if __name__ == "__main__":
